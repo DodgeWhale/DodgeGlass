@@ -1,0 +1,11 @@
+name: Glass
+version: 0.2
+author: DodgeWhale
+main: net.dodgewhale.glass.Main
+commands:
+  gm:
+    usage: /gm
+    description: Updates player's gamemode
+  health:
+    usage: /health
+    description: Displays player's health
