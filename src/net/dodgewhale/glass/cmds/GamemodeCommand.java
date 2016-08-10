@@ -1,13 +1,9 @@
 package net.dodgewhale.glass.cmds;
 
-import net.dodgewhale.glass.GlassMain;
 import net.dodgewhale.glass.objects.ActionBar;
-import net.dodgewhale.glass.objects.GlassFirework;
 import net.dodgewhale.glass.utils.MessageUtil;
 
 import org.apache.commons.lang.WordUtils;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
 import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -30,9 +26,6 @@ public class GamemodeCommand implements CommandExecutor {
 		}
 		
 		if (cmd.getName().equalsIgnoreCase("gm")) {
-			if(player.isOp())
-				MessageUtil.send(player, GlassMain.getGson().toJson(new GlassFirework(Color.YELLOW, Color.ORANGE, FireworkEffect.Type.BURST)));
-			
 			Gamemode[] list = Gamemode.values();
 			int length = list.length - 1;
 

@@ -3,7 +3,7 @@ package net.dodgewhale.glass.objects;
 import org.bukkit.entity.Player;
 
 public class DodgePlayer {
-	// transient should make it so Gson wont serialize the variable
+	// transient makes it so Gson wont serialize the variable
 	
 	private String uuid, name;
 	private transient HealthBar healthBar;
