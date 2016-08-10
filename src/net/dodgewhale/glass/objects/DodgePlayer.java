@@ -1,5 +1,7 @@
 package net.dodgewhale.glass.objects;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import net.dodgewhale.glass.data.PlayerData;
@@ -11,7 +13,7 @@ import org.bukkit.entity.Player;
 public class DodgePlayer {
 	// transient makes it so Gson wont serialize the variable
 	
-	private String uuid, name;
+	private String uuid, name, lastLogin;
 	private transient HealthBar healthBar;
 	
 	private HashMap<String, Cooldown> cooldowns = new HashMap<>();
@@ -20,12 +22,19 @@ public class DodgePlayer {
 		this.uuid = player.getUniqueId().toString();
 		this.name = player.getName();
 		
+		this.lastLogin = new SimpleDateFormat("dd MMMM yyyy - h:mma").format(new Date());
 		this.healthBar = new HealthBar(player);
 		
-		// Store object in global map
+		// I might not want to store the object in the map if I add a command to check the player's
+		// data when they're offline in which case this would probably have to be moved
 		PlayerData.getAll().put(this.getUUID(), this);
 	}
 
+	// A constructor with no args might be needed for the Gson.fromJson method to work
+	public DodgePlayer() {
+		
+	}
+	
 	public String getUUID() {
 		return uuid;
 	}
@@ -36,6 +45,10 @@ public class DodgePlayer {
 	
 	public Player getPlayer() {
 		return Bukkit.getPlayer(this.getName());
+	}
+	
+	public String getLastLogin() {
+		return this.lastLogin;
 	}
 	
 	/**

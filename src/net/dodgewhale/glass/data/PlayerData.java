@@ -18,7 +18,7 @@ import net.dodgewhale.glass.utils.MessageUtil;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
-
+	
 	private static GlassMain plugin = GlassMain.getInstance();
 	private static HashMap<String, DodgePlayer> all = new HashMap<>();
 	
@@ -39,29 +39,36 @@ public class PlayerData {
 		System.out.println(date);
 	}
 	
-	// TODO add "/players/" prefix
-	public void save(DodgePlayer dPlayer) {
+	public static void save(DodgePlayer dPlayer) {
+		if(dPlayer == null) return;
+		
 		try {
-			FileWriter writer = new FileWriter(dPlayer.getUUID() + ".json");
+			FileWriter writer = new FileWriter(PlayerData.getFilePath(dPlayer.getUUID()));
 			
 			writer.write(plugin.getGson().toJson(dPlayer));
 			writer.close();
+			
+			PlayerData.getAll().remove(dPlayer.getUUID());
 		} catch (IOException e) {
 			// e.printStackTrace();
 			MessageUtil.log(Level.WARNING, "Unable to save player data for " + dPlayer.getName());
 		}
 	}
 	
-	public void load(Player player) {
-		File file = new File(player.getUniqueId().toString() + ".json");
+	public static void load(Player player) {
+		File file = new File(PlayerData.getFilePath(player.getUniqueId().toString()));
 		
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
-			
-			plugin.getGson().fromJson(br, DodgePlayer.class);
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(file.exists()) {
+			try {
+				BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
+				
+				plugin.getGson().fromJson(br, DodgePlayer.class);
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} else {
+			new DodgePlayer(player);
 		}
 	}
 	
@@ -83,5 +90,10 @@ public class PlayerData {
 		}
 		
 		return PlayerData.getAll().get(uuid);
+	}
+	
+	// TODO Test the plugin on the server and change file path if necessary
+	public static String getFilePath(String uuid) {
+		return "players/" + uuid + ".json";
 	}
 }
