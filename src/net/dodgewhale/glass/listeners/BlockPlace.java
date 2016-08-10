@@ -1,5 +1,7 @@
 package net.dodgewhale.glass.listeners;
 
+import net.dodgewhale.glass.data.PlayerData;
+import net.dodgewhale.glass.objects.DodgePlayer;
 import net.dodgewhale.glass.utils.BukkitUtil;
 import net.dodgewhale.glass.utils.MessageUtil;
 
@@ -18,10 +20,15 @@ public class BlockPlace implements Listener {
 		
 		Block block = event.getBlock();
 		if(block == null) return;
+
+		DodgePlayer dPlayer = PlayerData.find(player);
+		String key = "TNT_PLACE";
 		
-		if(block.getType().equals(Material.TNT)) {
-			MessageUtil.broadcast("&cWARNING: " + player.getName()
-					+ " placed TNT (" + BukkitUtil.formatLocation(block.getLocation()) + ")", true);
+		if(dPlayer != null && dPlayer.checkCooldown(key, 10.0)) {
+			if(block.getType().equals(Material.TNT)) {
+				MessageUtil.broadcast("&cWARNING: " + player.getName() 
+						+ " placed TNT (" + BukkitUtil.formatLocation(block.getLocation()) + ")", true);
+			}
 		}
 	}
 }

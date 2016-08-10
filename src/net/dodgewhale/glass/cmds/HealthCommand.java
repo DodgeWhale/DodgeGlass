@@ -1,10 +1,7 @@
 package net.dodgewhale.glass.cmds;
 
-import java.util.HashMap;
-
-import net.dodgewhale.glass.GlassMain;
-import net.dodgewhale.glass.objects.ActionBar;
-import net.dodgewhale.glass.objects.HealthBar;
+import net.dodgewhale.glass.data.PlayerData;
+import net.dodgewhale.glass.objects.DodgePlayer;
 import net.dodgewhale.glass.utils.MessageUtil;
 
 import org.bukkit.command.Command;
@@ -22,24 +19,11 @@ public class HealthCommand implements CommandExecutor {
 		}
 
 		Player player = (Player) sender;
-		String playerName = player.getName();
 		
 		if (cmd.getName().equalsIgnoreCase("health")) {
-			HashMap<String, HealthBar> healthBars = GlassMain.getHealthBars();
+			DodgePlayer dPlayer = PlayerData.find(player);
 			
-			HealthBar bar = healthBars.get(playerName);
-			if(bar != null) {
-				bar.getBar().removeAll();
-				healthBars.remove(playerName);
-				
-				new ActionBar("&bHealth bar has been hidden").send(player);
-			} else {
-				HealthBar newBar = new HealthBar(player);
-				healthBars.put(playerName, newBar);
-				
-				new ActionBar("&bHealth bar is now shown").send(player);
-			}
-			
+			if(dPlayer != null) dPlayer.toggleHealthBar();
 			return true;
 		}
 		return false;

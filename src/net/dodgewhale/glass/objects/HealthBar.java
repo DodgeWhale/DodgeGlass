@@ -11,31 +11,19 @@ import org.bukkit.entity.Player;
 
 public class HealthBar {
 
-	private String playerName;
 	private BossBar bar;
 
 	public HealthBar(Player player) {
-		this.setPlayer(player);
-		
-		this.bar = this.updateBar();
-		this.getBar().addPlayer(this.getPlayer());
-	}
-
-	public Player getPlayer() {
-		return Bukkit.getPlayer(this.playerName);
-	}
-	
-	public void setPlayer(Player player) {
-		this.playerName = player.getName();
+		this.bar = this.update(player);
 	}
 
 	public BossBar getBar() {
 		return bar;
 	}
 
-	public BossBar updateBar() {
+	public BossBar update(Player player) {
 		BossBar bar = this.getBar();
-		double health = this.getPlayer().getHealth();
+		double health = player.getHealth();
 		
 		String title = StringUtil.color("&c&lHP &c" + (int) health + " &l/ &c20");
 		if(bar == null)
