@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MessageUtil {
-
+	
 	public static void send(Player player, String message) {
 		player.sendMessage(StringUtil.color(message));
 	}

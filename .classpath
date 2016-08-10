@@ -11,7 +11,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="J:/Games/Minecraft/Development Server/spigot-1.10.jar"/>
+	<classpathentry kind="lib" path="C:/spigot/spigot-1.10.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>

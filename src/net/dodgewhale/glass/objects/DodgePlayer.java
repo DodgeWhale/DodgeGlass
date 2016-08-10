@@ -1,5 +1,7 @@
 package net.dodgewhale.glass.objects;
 
+import net.dodgewhale.glass.data.PlayerData;
+
 import org.bukkit.entity.Player;
 
 public class DodgePlayer {
@@ -11,6 +13,9 @@ public class DodgePlayer {
 	public DodgePlayer(Player player) {
 		this.uuid = player.getUniqueId().toString();
 		this.name = player.getName();
+		
+		// Store object in global map
+		PlayerData.getAll().put(this.getUUID(), this);
 	}
 
 	public String getUUID() {
