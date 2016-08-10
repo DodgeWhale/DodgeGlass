@@ -34,7 +34,9 @@ public class HealthCommand implements CommandExecutor {
 				
 				new ActionBar("&bHealth bar has been hidden").send(player);
 			} else {
-				healthBars.put(playerName, new HealthBar(player));
+				HealthBar newBar = new HealthBar(player);
+				healthBars.put(playerName, newBar);
+				
 				new ActionBar("&bHealth bar is now shown").send(player);
 			}
 			

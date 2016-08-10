@@ -18,12 +18,15 @@ import net.dodgewhale.glass.utils.MessageUtil;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.google.gson.Gson;
+
 public class GlassMain extends JavaPlugin {
 
 	// TODO Remove health bar on player quit
 	
 	private static GlassMain instance;
-	private static HashMap<String, HealthBar> healthBars = new HashMap<String, HealthBar>();
+	private static Gson gson = new Gson();
+	private static HashMap<String, HealthBar> healthBars = new HashMap<>();
 	
 	@Override
 	public void onEnable() {
@@ -48,6 +51,10 @@ public class GlassMain extends JavaPlugin {
 		return GlassMain.instance;
 	}
 
+	public static Gson getGson() {
+		return GlassMain.gson;
+	}
+	
 	public void registerListeners() {
 		PluginManager manager = getServer().getPluginManager();
 		

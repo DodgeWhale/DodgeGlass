@@ -1,7 +1,7 @@
 name: Glass
 version: 0.2
 author: DodgeWhale
-main: net.dodgewhale.glass.Main
+main: net.dodgewhale.glass.GlassMain
 commands:
   gm:
     usage: /gm
