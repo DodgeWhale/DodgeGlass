@@ -1,5 +1,6 @@
 package net.dodgewhale.glass.listeners;
 
+import net.dodgewhale.glass.data.PlayerData;
 import net.dodgewhale.glass.objects.GlassFirework;
 import net.dodgewhale.glass.utils.MessageUtil;
 
@@ -15,6 +16,9 @@ public class PlayerJoin implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
+		
+		// TODO NEED TO TEST
+		PlayerData.load(player);
 		
 		MessageUtil.send(player, "&7Welcome back, " + player.getName());
 		new GlassFirework(Color.YELLOW, Color.ORANGE, FireworkEffect.Type.BURST).launch(player);
