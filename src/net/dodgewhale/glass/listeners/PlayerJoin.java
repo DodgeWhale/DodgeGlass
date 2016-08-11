@@ -1,8 +1,12 @@
 package net.dodgewhale.glass.listeners;
 
+import java.util.logging.Level;
+
 import net.dodgewhale.glass.data.PlayerData;
+import net.dodgewhale.glass.objects.DodgePlayer;
 import net.dodgewhale.glass.objects.GlassFirework;
 import net.dodgewhale.glass.utils.MessageUtil;
+import net.dodgewhale.glass.utils.StringUtil;
 
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -17,8 +21,11 @@ public class PlayerJoin implements Listener {
 	public void onJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		
-		// TODO NEED TO TEST
-		PlayerData.load(player);
+		DodgePlayer dPlayer = PlayerData.load(player, true);
+		if(dPlayer != null) {
+			dPlayer.setLastLogin(StringUtil.getDate());
+			MessageUtil.log(Level.INFO, "Player data loaded for " + dPlayer.getName());
+		}
 		
 		MessageUtil.send(player, "&7Welcome back, " + player.getName());
 		new GlassFirework(Color.YELLOW, Color.ORANGE, FireworkEffect.Type.BURST).launch(player);

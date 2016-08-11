@@ -22,8 +22,8 @@ public class Cooldown {
 		return this.duration;
 	}
 
-	public boolean hasExpired() {
-		return System.currentTimeMillis() > this.getStart() + this.getDuration() * 1000L;
+	public long calculateRemainder() {
+		return (long) ((this.getStart() + (this.getDuration() * 1000L)) - System.currentTimeMillis());
 	}
 	
 }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -15,6 +16,7 @@ import net.dodgewhale.glass.GlassMain;
 import net.dodgewhale.glass.objects.DodgePlayer;
 import net.dodgewhale.glass.utils.MessageUtil;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
@@ -26,8 +28,18 @@ public class PlayerData {
 		return PlayerData.all;
 	}
 	
-	public void unload() {
-		// TODO Save all player data
+	public static void enable() {
+		new File(plugin.getDataFolder() + "/players").mkdir();
+		
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			PlayerData.load(player, true);
+		}
+	}
+	
+	public static void disable() {
+		for(Entry<String, DodgePlayer> entry : PlayerData.getAll().entrySet()) {
+			PlayerData.save(entry.getValue(), true);
+		}
 	}
 	
 	public static void main(String args[]) {
@@ -39,8 +51,8 @@ public class PlayerData {
 		System.out.println(date);
 	}
 	
-	public static void save(DodgePlayer dPlayer) {
-		if(dPlayer == null) return;
+	public static boolean save(DodgePlayer dPlayer, boolean remove) {
+		if(dPlayer == null) return false;
 		
 		try {
 			FileWriter writer = new FileWriter(PlayerData.getFilePath(dPlayer.getUUID()));
@@ -48,27 +60,35 @@ public class PlayerData {
 			writer.write(plugin.getGson().toJson(dPlayer));
 			writer.close();
 			
-			PlayerData.getAll().remove(dPlayer.getUUID());
+			if(remove) PlayerData.getAll().remove(dPlayer.getUUID());
+			return true;
 		} catch (IOException e) {
-			// e.printStackTrace();
+			e.printStackTrace();
+			
 			MessageUtil.log(Level.WARNING, "Unable to save player data for " + dPlayer.getName());
+			return false;
 		}
 	}
 	
-	public static void load(Player player) {
+	public static DodgePlayer load(Player player, boolean save) {
 		File file = new File(PlayerData.getFilePath(player.getUniqueId().toString()));
 		
 		if(file.exists()) {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
 				
-				plugin.getGson().fromJson(br, DodgePlayer.class);
+				DodgePlayer dPlayer = plugin.getGson().fromJson(br, DodgePlayer.class);
 				br.close();
+				
+				// Can't add to the map in the object constructor because of problems with fromJson
+				if(save) PlayerData.getAll().put(dPlayer.getUUID(), dPlayer);
+				return dPlayer;
 			} catch (IOException e) {
 				e.printStackTrace();
+				return null;
 			}
 		} else {
-			new DodgePlayer(player);
+			return new DodgePlayer(player);
 		}
 	}
 	
@@ -88,12 +108,11 @@ public class PlayerData {
 		} else if(obj instanceof UUID) {
 			uuid = ((UUID) obj).toString();
 		}
-		
 		return PlayerData.getAll().get(uuid);
 	}
 	
 	// TODO Test the plugin on the server and change file path if necessary
 	public static String getFilePath(String uuid) {
-		return "players/" + uuid + ".json";
+		return plugin.getDataFolder() + "/players/" + uuid + ".json";
 	}
 }

@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import net.dodgewhale.glass.cmds.GamemodeCommand;
 import net.dodgewhale.glass.cmds.HealthCommand;
+import net.dodgewhale.glass.data.PlayerData;
 import net.dodgewhale.glass.listeners.AsyncPlayerChat;
 import net.dodgewhale.glass.listeners.BlockBreak;
 import net.dodgewhale.glass.listeners.BlockPlace;
@@ -11,6 +12,7 @@ import net.dodgewhale.glass.listeners.EntityDamage;
 import net.dodgewhale.glass.listeners.EntityExplode;
 import net.dodgewhale.glass.listeners.EntityRegainHealth;
 import net.dodgewhale.glass.listeners.PlayerJoin;
+import net.dodgewhale.glass.listeners.PlayerQuit;
 import net.dodgewhale.glass.utils.MessageUtil;
 
 import org.bukkit.plugin.PluginManager;
@@ -30,6 +32,7 @@ public class GlassMain extends JavaPlugin {
 	public void onEnable() {
 		GlassMain.instance = this;
 		
+		PlayerData.enable();
 		this.registerListeners();
 		this.registerCommands();
 
@@ -38,10 +41,7 @@ public class GlassMain extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
-		/* for(Entry<String, HealthBar> entry : GlassMain.healthBars.entrySet()) {
-			entry.getValue().getBar().removeAll();
-		} */
-		
+		PlayerData.disable();
 		MessageUtil.log(Level.INFO, "Glass disabled.");
 	}
 
@@ -63,6 +63,7 @@ public class GlassMain extends JavaPlugin {
 		manager.registerEvents(new EntityExplode(), this);
 		manager.registerEvents(new EntityRegainHealth(), this);
 		manager.registerEvents(new PlayerJoin(), this);
+		manager.registerEvents(new PlayerQuit(), this);
 	}
 	
 	public void registerCommands() {

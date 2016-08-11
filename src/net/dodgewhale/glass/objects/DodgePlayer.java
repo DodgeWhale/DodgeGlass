@@ -1,10 +1,9 @@
 package net.dodgewhale.glass.objects;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 import net.dodgewhale.glass.data.PlayerData;
+import net.dodgewhale.glass.utils.StringUtil;
 
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BossBar;
@@ -22,8 +21,8 @@ public class DodgePlayer {
 		this.uuid = player.getUniqueId().toString();
 		this.name = player.getName();
 		
-		this.lastLogin = new SimpleDateFormat("dd MMMM yyyy - h:mma").format(new Date());
-		this.healthBar = new HealthBar(player);
+		Bukkit.broadcastMessage(StringUtil.getDate());
+		this.lastLogin = StringUtil.getDate();
 		
 		// I might not want to store the object in the map if I add a command to check the player's
 		// data when they're offline in which case this would probably have to be moved
@@ -31,9 +30,7 @@ public class DodgePlayer {
 	}
 
 	// A constructor with no args might be needed for the Gson.fromJson method to work
-	public DodgePlayer() {
-		
-	}
+	public DodgePlayer() { }
 	
 	public String getUUID() {
 		return uuid;
@@ -49,6 +46,10 @@ public class DodgePlayer {
 	
 	public String getLastLogin() {
 		return this.lastLogin;
+	}
+	
+	public void setLastLogin(String date) {
+		this.lastLogin = date;
 	}
 	
 	/**
@@ -68,52 +69,42 @@ public class DodgePlayer {
 		}
 	}
 	
+	// Added init health bar if null to avoid loading the bar in the constructor
 	public HealthBar getHealthBar() {
-		return healthBar;
+		if(this.healthBar == null)
+			this.healthBar = new HealthBar(this.getPlayer());
+			
+		return this.healthBar;
 	}
 	
 	public HashMap<String, Cooldown> getCooldowns() {
 		return this.cooldowns;
 	}
 	
-	public void createCooldown(String key, double duration) {
-		this.getCooldowns().put(key, new Cooldown(duration));
+	public long getCooldown(String key) {
+		if(!this.getCooldowns().containsKey(key))
+			return 0;
+		return this.getCooldowns().get(key).calculateRemainder();
+	}
+	
+	public long setCooldown(String key, double duration) {
+		Cooldown cooldown = new Cooldown(duration);
+		
+		this.getCooldowns().put(key, cooldown);
+		return cooldown.calculateRemainder();
 	}
 	
 	/**
-	 * Checks if the cooldown has expired or creates<br>
-	 * a new one if it doesn't exist yet
-	 * @return Whether or not the attempted task can proceed
+	 * Used to check if a previous cooldown has expired or create a new
+	 * @param key Cooldown ID
+	 * @param duration How long the cooldown is in seconds
+	 * @return True if the cooldown expired or has been created
 	 */
-	public boolean checkCooldown(String key, double duration) {
-		if(this.hasCooldown(key)) {
-			return this.checkCooldown(key);
-		}
-		this.createCooldown(key, duration);
-		return true;
-	}
-	
-	/**
-	 * Used to check if a cooldown has expired
-	 * @param key Name of the cooldown
-	 * @return Whether or not the cooldown has finished
-	 */
-	public boolean checkCooldown(String key) {
-		if(this.hasCooldown(key)) {
-			if(this.getCooldowns().get(key).hasExpired()) {
-				this.removeCooldown(key);
-				return true;
-			}
+	public boolean tryCooldown(String key, double duration) {
+		if(this.getCooldown(key) <= 0) {
+			this.setCooldown(key, duration);
+			return true;
 		}
 		return false;
 	}
-	
-	public boolean hasCooldown(String key) {
-		return this.getCooldowns().containsKey(key);
-	}
-	
-	public void removeCooldown(String key) {
-		this.getCooldowns().remove(key);
-	}
-	
 }
