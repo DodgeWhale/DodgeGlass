@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 public class DodgePlayer {
 	// transient makes it so Gson wont serialize the variable
+	// http://stackoverflow.com/questions/4216745/java-string-to-date-conversion
 	
 	private String uuid, name, lastLogin;
 	private transient HealthBar healthBar;

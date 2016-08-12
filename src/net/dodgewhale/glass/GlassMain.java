@@ -20,14 +20,15 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class GlassMain extends JavaPlugin {
 
 	// TODO Remove health bar on player quit
+	// This ^ might be fixed with the new player data system anyway
 	
 	private static GlassMain instance;
 	private Gson gson = new Gson();
-	// private static HashMap<String, HealthBar> healthBars = new HashMap<>();
 	
 	@Override
 	public void onEnable() {

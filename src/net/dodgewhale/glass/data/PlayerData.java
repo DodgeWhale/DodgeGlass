@@ -21,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PlayerData {
+	// https://sites.google.com/site/gson/gson-user-guide#TOC-Using-Gson
 	
 	private static GlassMain plugin = GlassMain.getInstance();
 	private static HashMap<String, DodgePlayer> all = new HashMap<>();
@@ -30,6 +31,7 @@ public class PlayerData {
 	}
 	
 	public static void enable() {
+		// TODO Move into the save method incase the folder is deleted while the servers running
 		new File(plugin.getDataFolder() + "/players").mkdir();
 		
 		for(Player player : Bukkit.getOnlinePlayers()) {
@@ -52,6 +54,7 @@ public class PlayerData {
 		System.out.println(date);
 	}
 	
+	// TODO https://www.mkyong.com/java/how-to-enable-pretty-print-json-output-gson/s
 	public static boolean save(DodgePlayer dPlayer, boolean remove) {
 		if(dPlayer == null) return false;
 		
@@ -60,6 +63,7 @@ public class PlayerData {
 			FileWriter writer = new FileWriter(PlayerData.getFilePath(dPlayer.getUUID()));
 			
 			writer.write(plugin.getGson().toJson(dPlayer));
+			writer.flush();
 			writer.close();
 			
 			if(remove)
