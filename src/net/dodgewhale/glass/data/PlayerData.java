@@ -14,6 +14,7 @@ import java.util.logging.Level;
 
 import net.dodgewhale.glass.GlassMain;
 import net.dodgewhale.glass.objects.DodgePlayer;
+import net.dodgewhale.glass.objects.ProcessTimer;
 import net.dodgewhale.glass.utils.MessageUtil;
 
 import org.bukkit.Bukkit;
@@ -54,13 +55,16 @@ public class PlayerData {
 	public static boolean save(DodgePlayer dPlayer, boolean remove) {
 		if(dPlayer == null) return false;
 		
+		ProcessTimer timer = new ProcessTimer();
 		try {
 			FileWriter writer = new FileWriter(PlayerData.getFilePath(dPlayer.getUUID()));
 			
 			writer.write(plugin.getGson().toJson(dPlayer));
 			writer.close();
 			
-			if(remove) PlayerData.getAll().remove(dPlayer.getUUID());
+			if(remove)
+				PlayerData.getAll().remove(dPlayer.getUUID());			
+			MessageUtil.log(Level.INFO, "Player data saved for " + dPlayer.getName() + " (" + timer.calculate() + ")");
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -73,6 +77,7 @@ public class PlayerData {
 	public static DodgePlayer load(Player player, boolean save) {
 		File file = new File(PlayerData.getFilePath(player.getUniqueId().toString()));
 		
+		ProcessTimer timer = new ProcessTimer();
 		if(file.exists()) {
 			try {
 				BufferedReader br = new BufferedReader(new FileReader(file.getAbsolutePath()));
@@ -81,10 +86,15 @@ public class PlayerData {
 				br.close();
 				
 				// Can't add to the map in the object constructor because of problems with fromJson
-				if(save) PlayerData.getAll().put(dPlayer.getUUID(), dPlayer);
+				if(save)
+					PlayerData.getAll().put(dPlayer.getUUID(), dPlayer);
+				
+				MessageUtil.log(Level.INFO, "Player data loaded for " + dPlayer.getName() + " (" + timer.calculate() + ")");
 				return dPlayer;
 			} catch (IOException e) {
 				e.printStackTrace();
+				
+				MessageUtil.log(Level.WARNING, "Unable to load player data for " + player.getName());
 				return null;
 			}
 		} else {

@@ -22,10 +22,9 @@ public class BlockPlace implements Listener {
 		if(block == null) return; // || player.isOp()
 
 		DodgePlayer dPlayer = PlayerData.find(player);
-		String key = "TNT_PLACE";
 		
 		if(block.getType().equals(Material.TNT)) {
-			if(dPlayer != null && dPlayer.tryCooldown(key, 10.0)) {
+			if(dPlayer != null && dPlayer.tryCooldown("TNT_PLACE", 10.0)) {
 				MessageUtil.broadcast("&cWARNING: " + player.getName() 
 						+ " placed TNT (" + BukkitUtil.formatLocation(block.getLocation()) + ")", true);
 			}

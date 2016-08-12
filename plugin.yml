@@ -1,5 +1,5 @@
 name: Glass
-version: 0.2
+version: 0.3
 author: DodgeWhale
 main: net.dodgewhale.glass.GlassMain
 commands:
@@ -9,3 +9,6 @@ commands:
   health:
     usage: /health
     description: Displays player's health
+  sync:
+    usage: /sync
+    description: Saves player's data

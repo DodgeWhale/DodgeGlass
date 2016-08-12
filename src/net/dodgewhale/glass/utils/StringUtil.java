@@ -1,5 +1,6 @@
 package net.dodgewhale.glass.utils;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,6 +20,11 @@ public class StringUtil {
 	
 	public static String getDate() {
 		return new SimpleDateFormat("dd MMMM yyyy - h:mma").format(new Date());
+	}
+
+	public static double formatDouble(double value, String format) {
+		DecimalFormat df = new DecimalFormat(format);
+		return Double.valueOf(df.format(value));
 	}
 	
 }

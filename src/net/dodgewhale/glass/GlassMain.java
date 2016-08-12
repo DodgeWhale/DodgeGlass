@@ -4,6 +4,7 @@ import java.util.logging.Level;
 
 import net.dodgewhale.glass.cmds.GamemodeCommand;
 import net.dodgewhale.glass.cmds.HealthCommand;
+import net.dodgewhale.glass.cmds.SyncCommand;
 import net.dodgewhale.glass.data.PlayerData;
 import net.dodgewhale.glass.listeners.AsyncPlayerChat;
 import net.dodgewhale.glass.listeners.BlockBreak;
@@ -69,6 +70,7 @@ public class GlassMain extends JavaPlugin {
 	public void registerCommands() {
 		this.getCommand("gm").setExecutor(new GamemodeCommand());
 		this.getCommand("health").setExecutor(new HealthCommand());
+		this.getCommand("sync").setExecutor(new SyncCommand());
 	}
 
 }
