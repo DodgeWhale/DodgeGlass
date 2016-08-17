@@ -2,6 +2,8 @@ package net.dodgewhale.glass.objects;
 
 import java.util.HashMap;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.dodgewhale.glass.data.PlayerData;
 import net.dodgewhale.glass.utils.StringUtil;
 
@@ -13,16 +15,22 @@ public class DodgePlayer {
 	// transient makes it so Gson wont serialize the variable
 	// http://stackoverflow.com/questions/4216745/java-string-to-date-conversion
 	
-	private String uuid, name, lastLogin;
+	@Getter
+	private String UUID, name;
+	
+	@Getter @Setter
+	private String lastLogin;
+	
 	private transient HealthBar healthBar;
 	
+	@Getter
 	private HashMap<String, Cooldown> cooldowns = new HashMap<>();
 	
 	public DodgePlayer(Player player) {
-		this.uuid = player.getUniqueId().toString();
+		this.UUID = player.getUniqueId().toString();
 		this.name = player.getName();
 		
-		Bukkit.broadcastMessage(StringUtil.getDate());
+		// Bukkit.broadcastMessage(StringUtil.getDate());
 		this.lastLogin = StringUtil.getDate();
 		
 		// I might not want to store the object in the map if I add a command to check the player's
@@ -33,24 +41,8 @@ public class DodgePlayer {
 	// A constructor with no args might be needed for the Gson.fromJson method to work
 	public DodgePlayer() { }
 	
-	public String getUUID() {
-		return uuid;
-	}
-
-	public String getName() {
-		return name;
-	}
-	
 	public Player getPlayer() {
 		return Bukkit.getPlayer(this.getName());
-	}
-	
-	public String getLastLogin() {
-		return this.lastLogin;
-	}
-	
-	public void setLastLogin(String date) {
-		this.lastLogin = date;
 	}
 	
 	/**
@@ -76,10 +68,6 @@ public class DodgePlayer {
 			this.healthBar = new HealthBar(this.getPlayer());
 			
 		return this.healthBar;
-	}
-	
-	public HashMap<String, Cooldown> getCooldowns() {
-		return this.cooldowns;
 	}
 	
 	public long getCooldown(String key) {

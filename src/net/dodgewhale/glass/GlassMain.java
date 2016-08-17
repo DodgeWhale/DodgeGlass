@@ -2,6 +2,7 @@ package net.dodgewhale.glass;
 
 import java.util.logging.Level;
 
+import lombok.Getter;
 import net.dodgewhale.glass.cmds.GamemodeCommand;
 import net.dodgewhale.glass.cmds.HealthCommand;
 import net.dodgewhale.glass.cmds.SyncCommand;
@@ -20,14 +21,15 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class GlassMain extends JavaPlugin {
 
 	// TODO Remove health bar on player quit
 	// This ^ might be fixed with the new player data system anyway
 	
+	@Getter
 	private static GlassMain instance;
+	@Getter
 	private Gson gson = new Gson();
 	
 	@Override
@@ -47,14 +49,6 @@ public class GlassMain extends JavaPlugin {
 		MessageUtil.log(Level.INFO, "Glass disabled.");
 	}
 
-	public static GlassMain getInstance() {
-		return GlassMain.instance;
-	}
-
-	public Gson getGson() {
-		return this.gson;
-	}
-	
 	public void registerListeners() {
 		PluginManager manager = getServer().getPluginManager();
 		

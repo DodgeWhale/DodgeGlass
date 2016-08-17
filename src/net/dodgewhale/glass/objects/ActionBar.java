@@ -1,5 +1,6 @@
 package net.dodgewhale.glass.objects;
 
+import lombok.Getter;
 import net.dodgewhale.glass.utils.StringUtil;
 import net.minecraft.server.v1_10_R1.IChatBaseComponent;
 import net.minecraft.server.v1_10_R1.IChatBaseComponent.ChatSerializer;
@@ -10,14 +11,11 @@ import org.bukkit.entity.Player;
 
 public class ActionBar {
 
+	@Getter
 	private String message;
 	
 	public ActionBar(String message) {
-		this.message = message;
-	}
-	
-	public String getMessage() {
-		return StringUtil.color(this.message);
+		this.message = StringUtil.color(message);
 	}
 	
 	public void send(Player player) {

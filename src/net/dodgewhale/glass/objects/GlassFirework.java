@@ -1,5 +1,7 @@
 package net.dodgewhale.glass.objects;
 
+import lombok.Getter;
+
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.entity.EntityType;
@@ -9,25 +11,15 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 public class GlassFirework {
 
+	@Getter
 	private Color color, fade;
+	@Getter
 	private FireworkEffect.Type type;
 
 	public GlassFirework(Color color, Color fade, FireworkEffect.Type type) {
 		this.color = color;
 		this.fade = fade;
 		this.type = type;
-	}
-
-	public Color getColor() {
-		return color;
-	}
-
-	public Color getFade() {
-		return fade;
-	}
-
-	public FireworkEffect.Type getType() {
-		return type;
 	}
 
 	public void launch(Player player) {

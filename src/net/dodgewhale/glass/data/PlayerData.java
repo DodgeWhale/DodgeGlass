@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import lombok.Getter;
 import net.dodgewhale.glass.GlassMain;
 import net.dodgewhale.glass.objects.DodgePlayer;
 import net.dodgewhale.glass.objects.ProcessTimer;
@@ -24,11 +25,8 @@ public class PlayerData {
 	// https://sites.google.com/site/gson/gson-user-guide#TOC-Using-Gson
 	
 	private static GlassMain plugin = GlassMain.getInstance();
+	@Getter
 	private static HashMap<String, DodgePlayer> all = new HashMap<>();
-	
-	public static HashMap<String, DodgePlayer> getAll() {
-		return PlayerData.all;
-	}
 	
 	public static void enable() {
 		// TODO Move into the save method incase the folder is deleted while the servers running

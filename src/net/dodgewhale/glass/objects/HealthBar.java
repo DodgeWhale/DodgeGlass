@@ -1,5 +1,6 @@
 package net.dodgewhale.glass.objects;
 
+import lombok.Getter;
 import net.dodgewhale.glass.utils.StringUtil;
 
 import org.bukkit.Bukkit;
@@ -11,14 +12,11 @@ import org.bukkit.entity.Player;
 
 public class HealthBar {
 
+	@Getter
 	private BossBar bar;
 
 	public HealthBar(Player player) {
 		this.bar = this.update(player);
-	}
-
-	public BossBar getBar() {
-		return bar;
 	}
 
 	public BossBar update(Player player) {

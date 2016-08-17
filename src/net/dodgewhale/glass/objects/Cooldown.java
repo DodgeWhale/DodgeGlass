@@ -1,8 +1,12 @@
 package net.dodgewhale.glass.objects;
 
+import lombok.Getter;
+
 public class Cooldown {
 	
+	@Getter
 	private long start;
+	@Getter
 	private double duration;
 	
 	public Cooldown(double duration) {
@@ -10,16 +14,8 @@ public class Cooldown {
 		this.duration = duration;
 	}
 	
-	public long getStart() {
-		return this.start;
-	}
-	
 	public void updateStart() {
 		this.start = System.currentTimeMillis();
-	}
-	
-	public double getDuration() {
-		return this.duration;
 	}
 
 	public long calculateRemainder() {
